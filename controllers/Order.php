@@ -30,25 +30,53 @@ class Order extends CI_Controller {
 	}
 	public function add(){
 		$this->load->model('branch_model');
-		$this->load->model('category_model');
+		//$this->load->model('category_model');
 		$this->load->model('members_model');
+		$this->load->model('product_model');
 
 
 		$data['branch'] = $this->branch_model->getAll();
 		$data['members'] = $this->members_model->getAll();
+		$data['product'] = $this->product_model->getAll();
 
 		$this->load->view('order/add',$data);
 	}
 	public function save(){
+		$this->load->model('order_model');
 
-		print_r($this->input->post());
-		/*
-		$this->load->model('product_model');
+		$return_id = $this->order_model->save();
 
-		$last_id = $this->product_model->save();
-		//$this->distributor_model->save_store($last_id);
 
-		redirect('product');*/
-		//print_r($_POST);
+		$productArray = array();
+
+		foreach ($this->input->post('product') as $key => $value) {
+			//echo $key.' - '.$value;
+			if($value>0){
+				//echo '!';
+				$arr['mod_order_sub_parent_id'] = $return_id;
+				$arr['mod_order_sub_product_id'] = $this->input->post('product')[$key];
+				$arr['mod_order_sub_product_qty'] = $this->input->post('qty')[$key];
+				$arr['mod_order_sub_product_total'] = $this->input->post('total')[$key];
+
+				array_push($productArray,$arr);
+			}
+			//echo "<br>";
+			//if(
+		}
+
+		$this->order_model->save_sub($return_id,$productArray);
+
+		redirect('order/payment/'.$return_id);
+	}
+	function payment($id){
+		$this->load->model('order_model');
+		$data['order'] = $this->order_model->getByID($id);
+		$data['order_sub'] = $this->order_model->getSubByID($id);
+
+		$this->load->view('order/payment',$data);
+		//print_r($id);
+	}
+	function getLastInv($branch_id){
+		
 	}
 }

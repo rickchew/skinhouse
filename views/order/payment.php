@@ -28,24 +28,18 @@
                         </div>
                     </header>
                     <div class="body">
-                        <form class="form-horizontal" role="form" action="<?php echo site_url('order/save')?>" method="post">
+                        <form class="form-horizontal" role="form" action="#" method="post">
                             <fieldset>
                                 <legend class="section">&nbsp;</legend>
                                 &nbsp;<br>
                                 <div class="row">
-                                    <?php //print_r($members)?>
+                                    <?php //print_r($order)?>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="normal-field" class="col-sm-4 control-label">Members</label>
 
                                             <div class="col-sm-7">
-                                                <select name="memberID" data-placeholder="Please select.." class="chzn-select select-block-level" id="catID">
-                                                    <option value=""></option>
-                                                    <?php foreach($members as $mv):?>
-                                                    <?php $display = strlen($mv->mod_clients_nric) > 0 ? $mv->mod_clients_fullname.' ('.$mv->mod_clients_nric.')':$mv->mod_clients_fullname?>
-                                                    <option value="<?php echo $mv->mod_clients_id?>"><?php echo strtoupper($display)?></option>
-                                                    <?php endforeach?>
-                                                </select>
+                                                <input type="text" class="form-control input-transparent" value="<?php echo $order->mod_clients_fullname;?>" disabled="disabled"></input>
                                             </div>
                                         </div>
                                     </div>
@@ -54,25 +48,21 @@
                                             <label for="normal-field" class="col-sm-4 control-label">Branch</label>
                                             <?php //print_r($branch)?>
                                             <div class="col-sm-4">
-                                                <select name="branchID" data-placeholder="Please select.." class="chzn-select select-block-level">
-                                                    <option value=""></option>
-                                                    <?php foreach($branch as $bv):?>
-                                                    <option value="<?php echo $bv->mod_branch_id?>"><?php echo $bv->mod_branch_name?></option>
-                                                    <?php endforeach?>
-                                                </select>
+                                                <input type="text" class="form-control input-transparent" value="<?php echo $order->mod_branch_name;?>" disabled="disabled"></input>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6">
+                                        <!--
                                         <div class="form-group">
                                             <label for="normal-field" class="col-sm-4 control-label">Total Amount</label>
 
                                             <div class="col-sm-7">
                                                 <input type="text" name="totalAmt" class="form-control input-transparent" autocomplete="off"></input>
                                             </div>
-                                        </div>
+                                        </div>-->
                                     </div>
                                     <div class="col-sm-6">
                                         
@@ -80,59 +70,72 @@
                                             <label for="normal-field" class="col-sm-4 control-label">Date</label>
 
                                             <div class="col-sm-4">
-                                                <input type="text" name="orderDate" class="form-control input-transparent" value="<?php echo date('Y-m-d')?>"></input>
+                                                <input type="text" class="form-control input-transparent" value="<?php echo $order->mod_order_date;?>" disabled="disabled"></input>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6">
+                                        <!--
                                         <div class="form-group">
                                             <label for="normal-field" class="col-sm-4 control-label">Remarks</label>
 
                                             <div class="col-sm-7">
                                                 <textarea class="form-control input-transparent" name="remarks"></textarea>
                                             </div>
-                                        </div>
+                                        </div>-->
                                     </div>
                                     <div class="col-sm-6">
-                                        <!--
+                                        
                                         <div class="form-group">
                                             <label for="normal-field" class="col-sm-4 control-label">Invoice No.</label>
 
                                             <div class="col-sm-4">
-                                                <input type="text" name="invoice_no" class="form-control input-transparent" value="<?php echo 'S'.date('Y');?>"></input>
+                                            <?php
+                                                /*
+                                                $inv_arr = explode('_', $order->mod_branch_last_inv);
+                                                $inv_prefix = $order->mod_branch_code;
+                                                $inv_year = $inv_arr[0] == date('Y') ? $inv_arr:date('Y');
+                                                $inv_no = '';
+
+                                                $inv_display = '';
+
+                                                print_r($inv_arr)*/
+                                            ?>
+                                                <input type="text" name="invoice_no" class="form-control input-transparent" value="<?php echo $order->mod_branch_code.date('Y').'0001';?>"></input>
                                             </div>
-                                        </div>-->
+                                        </div>
                                     </div>
                                 </div>
                                 &nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>
-                                <?php //print_r($product)?>
-                                <?php for($i=0;$i<10;$i++):?>
+                                <?php //print_r($order_sub)?>
+                                <?php $i=0;?>
+                                <?php foreach($order_sub as $ov):?>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        
                                        <div class="col-md-offset-2 col-sm-4">
-                                            <select id="product_<?php echo $i?>" name="product[]" data-placeholder="Please select.." class="chzn-select select-block-level" onchange="update_price(<?php echo $i?>);">
-                                                <option value=""></option>
-                                                <?php foreach($product as $pv):?>
-                                                <option value="<?php echo $pv->cms_product_id?>" rel="<?php echo $pv->cms_product_price?>" ><?php echo $pv->cms_product_name?></option>
-                                                <?php endforeach?>
-                                            </select>
+                                            <input type="text" name="invoice_no" class="form-control input-transparent" disabled="disabled" value="<?php echo $ov->cms_product_name?>"></input>
                                         </div>
                                         <div class="col-sm-1">
-                                            <input id="qty_<?php echo $i?>" type="text" name="qty[]" class="form-control input-transparent" placeholder="Quantity" onkeyup="update_total(<?php echo $i?>);" autocomplete="off"></input>
+                                            <input id="qty_<?php echo $i?>" type="text" name="qty[]" class="form-control input-transparent" disabled="disabled" placeholder="Quantity" autocomplete="off" value="<?php echo $ov->mod_order_sub_product_qty?>"></input>
                                         </div>
                                         <div class="col-sm-1">
-                                            <input id="price_<?php echo $i?>" type="text" name="price[]" class="form-control input-transparent" placeholder="Price" onkeyup="update_total(<?php echo $i?>);" autocomplete="off"></input>
+                                            <input id="total_<?php echo $i?>" type="text" name="taken[]" class="form-control input-transparent" placeholder="Taken" autocomplete="off"></input>
                                         </div>
                                         <div class="col-sm-1">
-                                            <input id="total_<?php echo $i?>" type="text" name="total[]" class="form-control input-transparent" placeholder="Total" autocomplete="off"></input>
+                                            <div class="checkbox">
+                                            <input id="checkbox_<?php echo $i?>" type="checkbox">
+                                            <label for="checkbox_<?php echo $i?>">
+                                                Pay
+                                            </label>
+                                        </div>
                                         </div>
                                     </div>
                                     &nbsp;<br>
                                 </div>
-                                <?php endfor?>
+                                <?php $i++;?>
+                                <?php endforeach?>
                                 &nbsp;<br>
                                 <div class="row">
                                     <div class="col-md-offset-8 col-sm-4">
@@ -144,7 +147,7 @@
                                                 Print
                                             </button>-->
                                             <button class="btn btn-success text-right">
-                                                Proceed with Payment
+                                                Generate Invoice
                                                 &nbsp;
                                                 <i class="fa fa-arrow-right"></i>
                                             </button>
