@@ -6,4 +6,10 @@ class Branch_model extends CI_Model {
 
 		return $query->result();
 	}
+	function getByID($branch_id){
+		$this->db->where('mod_branch_id',$branch_id);
+		$query = $this->db->get('mod_branch');
+
+		return $query->row();
+	}
 }

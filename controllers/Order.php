@@ -72,11 +72,16 @@ class Order extends CI_Controller {
 		$this->load->model('order_model');
 		$data['order'] = $this->order_model->getByID($id);
 		$data['order_sub'] = $this->order_model->getSubByID($id);
+		$data['last_inv'] = $this->order_model->getLastInv($data['order']->mod_branch_id);
 
 		$this->load->view('order/payment',$data);
 		//print_r($id);
 	}
 	function getLastInv($branch_id){
+		$this->load->model('order_model');
+
+		$data['last_inv'] = $this->order_model->getLastInv($branch_id);
 		
+		//print_r($data);
 	}
 }

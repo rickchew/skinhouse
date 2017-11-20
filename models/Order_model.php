@@ -2,15 +2,20 @@
 
 class Order_model extends CI_Model {
 	function save(){
+
 		$data['mod_order_clients_id'] = $this->input->post('memberID');
 		$data['mod_order_branch_id'] = $this->input->post('branchID');
-		//$data['mod_order_inv_display'] = $this->input->post('invoice_no');
+		
 		$data['mod_order_date'] = $this->input->post('orderDate');
 		$data['mod_order_total_amount'] = $this->input->post('totalAmt');
 
 
 		$data['mod_order_created_by'] = '';
 		$data['mod_order_date_created'] = date('Y-m-d H:i:s');
+
+		//Invoice No
+		$data['mod_order_inv_display'] = $this->getLastInv($data['mod_order_branch_id']);
+		//$data['mod_order_inv_id']
 
 
 		$this->db->insert('mod_order',$data);
@@ -42,6 +47,35 @@ class Order_model extends CI_Model {
 		$query = $this->db->get('mod_order_sub');
 
 		return $query->result();
+	}
+	function getLastInv($branchID){
+		$this->load->model('branch_model');
+
+		$branch_info = $this->branch_model->getByID($branchID);
+
+		//print_r($branch_info);
+		$search = $branch_info->mod_branch_code.date('Y');
+
+		//print_r($search);
+		
+		$this->db->where("mod_order_inv_display LIKE '$search%'");
+		
+		$this->db->order_by('mod_order_inv_display','DESC');
+
+		$query = $this->db->get('mod_order');
+
+		$result = $query->row();
+
+		//$lastInv = ;
+		$inv_no = substr($result->mod_order_inv_display, 5, 4);
+        $inv_no += 1;
+
+        $display_inv_no = $branch_info->mod_branch_code.date('Y').sprintf('%04d',$inv_no);
+
+		//print_r($display_inv_no);
+
+		return $display_inv_no;
+		//return $query->row();
 	}
 	/*
 	function getByID($id){

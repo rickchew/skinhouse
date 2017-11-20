@@ -94,26 +94,68 @@
                                             <div class="col-sm-4">
                                             <?php
                                                 /*
-                                                $inv_arr = explode('_', $order->mod_branch_last_inv);
-                                                $inv_prefix = $order->mod_branch_code;
-                                                $inv_year = $inv_arr[0] == date('Y') ? $inv_arr:date('Y');
-                                                $inv_no = '';
+                                                $inv_no = substr($last_inv->mod_order_inv_display, 5, 4);
+                                                $inv_no += 1;
 
-                                                $inv_display = '';
-
-                                                print_r($inv_arr)*/
+                                                $display_inv_no = $order->mod_branch_code.date('Y').sprintf('%04d',$inv_no);*/
                                             ?>
-                                                <input type="text" name="invoice_no" class="form-control input-transparent" value="<?php echo $order->mod_branch_code.date('Y').'0001';?>"></input>
+                                                <input type="text" class="form-control input-transparent" value="<?php echo $order->mod_order_inv_display;?>" disabled="disabled"></input>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 &nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>
                                 <?php //print_r($order_sub)?>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="col-md-offset-1 col-sm-10">
+                                        <table class="table">
+                                            <tr>
+                                                <th>Item</th>
+                                                <th width="6%" class="text-center">Qty</th>
+                                                <th width="6%" class="text-center">Taken</th>
+                                                <th width="6%" class="text-center">Price</th>
+                                                <th class="text-center">Action</th>
+                                            <tr>
+                                            <?php $i=0;?>
+                                            <?php foreach($order_sub as $ov):?>
+                                            <tr>
+                                                <td><input type="text" name="invoice_no" class="form-control input-transparent" disabled="disabled" value="<?php echo $ov->cms_product_name?>"></input></td>
+                                                <td><input id="qty_<?php echo $i?>" type="text" name="qty[]" class="form-control input-transparent text-right" disabled="disabled" placeholder="Quantity" autocomplete="off" value="<?php echo $ov->mod_order_sub_product_qty?>"></input></td>
+                                                <td><input id="qty_<?php echo $i?>" type="text" name="taken[]" class="form-control input-transparent text-right" autocomplete="off"></input></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <?php endforeach?>
+                                        </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-offset-8 col-sm-4">
+                                        <div class="btn-toolbar mt-lg text-align-right hidden-print">
+                                            <!--
+                                            <button id="print" class="btn btn-default">
+                                                <i class="fa fa-print"></i>
+                                                &nbsp;&nbsp;
+                                                Print
+                                            </button>-->
+                                            <button class="btn btn-success text-right">
+                                                Generate Invoice
+                                                &nbsp;
+                                                <i class="fa fa-arrow-right"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--
                                 <?php $i=0;?>
                                 <?php foreach($order_sub as $ov):?>
                                 <div class="row">
+
                                     <div class="col-sm-12">
+                                        
                                        <div class="col-md-offset-2 col-sm-4">
                                             <input type="text" name="invoice_no" class="form-control input-transparent" disabled="disabled" value="<?php echo $ov->cms_product_name?>"></input>
                                         </div>
@@ -137,24 +179,8 @@
                                 <?php $i++;?>
                                 <?php endforeach?>
                                 &nbsp;<br>
-                                <div class="row">
-                                    <div class="col-md-offset-8 col-sm-4">
-                                        <div class="btn-toolbar mt-lg text-align-right hidden-print">
-                                            <!--
-                                            <button id="print" class="btn btn-default">
-                                                <i class="fa fa-print"></i>
-                                                &nbsp;&nbsp;
-                                                Print
-                                            </button>-->
-                                            <button class="btn btn-success text-right">
-                                                Generate Invoice
-                                                &nbsp;
-                                                <i class="fa fa-arrow-right"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                &nbsp;<br>&nbsp;<br>&nbsp;
+                                
+                                &nbsp;<br>&nbsp;<br>&nbsp;-->
                             </fieldset>
                             <!--
                             &nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br><br>&nbsp;<br><br>&nbsp;<br>
