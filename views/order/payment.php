@@ -114,24 +114,38 @@
                                                 <th>Item</th>
                                                 <th width="6%" class="text-center">Qty</th>
                                                 <th width="6%" class="text-center">Taken</th>
-                                                <th width="6%" class="text-center">Price</th>
-                                                <th class="text-center">Action</th>
+                                                <th width="9%" class="text-center">Price (Total)</th>
+                                                <th width="9%" class="text-center">Pay</th>
+                                                <th width="9%" class="text-center">Include GST</th>
                                             <tr>
                                             <?php $i=0;?>
                                             <?php foreach($order_sub as $ov):?>
                                             <tr>
                                                 <td><input type="text" name="invoice_no" class="form-control input-transparent" disabled="disabled" value="<?php echo $ov->cms_product_name?>"></input></td>
                                                 <td><input id="qty_<?php echo $i?>" type="text" name="qty[]" class="form-control input-transparent text-right" disabled="disabled" placeholder="Quantity" autocomplete="off" value="<?php echo $ov->mod_order_sub_product_qty?>"></input></td>
-                                                <td><input id="qty_<?php echo $i?>" type="text" name="taken[]" class="form-control input-transparent text-right" autocomplete="off"></input></td>
-                                                <td></td>
-                                                <td></td>
+                                                <td><input id="taken_<?php echo $i?>" type="text" name="taken[]" class="form-control input-transparent text-right" autocomplete="off"></input></td>
+                                                <td><input id="price_<?php echo $i?>" type="text" name="price[]" class="form-control input-transparent text-right" autocomplete="off" value="<?php echo $ov->cms_product_price?>"></input></td>
+                                                <td class="text-center">
+                                                    <div class="checkbox">
+                                                        <input type="checkbox" id="pay_<?php echo $i?>">
+                                                        <label for="pay_<?php echo $i?>">&nbsp;</label>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="checkbox">
+                                                        <input type="checkbox" id="gstincl_<?php echo $i?>">
+                                                        <label for="gstincl_<?php echo $i?>">&nbsp;</label>
+                                                    </div>
+                                                </td>
                                             </tr>
+                                            <?php $i++;?>
                                             <?php endforeach?>
                                         </table>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
+                                    &nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>
                                     <div class="col-md-offset-8 col-sm-4">
                                         <div class="btn-toolbar mt-lg text-align-right hidden-print">
                                             <!--
@@ -140,6 +154,11 @@
                                                 &nbsp;&nbsp;
                                                 Print
                                             </button>-->
+                                            <button class="btn btn-danger text-right">
+                                                HOLD BILL
+                                                &nbsp;
+                                                
+                                            </button>
                                             <button class="btn btn-success text-right">
                                                 Generate Invoice
                                                 &nbsp;
@@ -147,6 +166,7 @@
                                             </button>
                                         </div>
                                     </div>
+                                    &nbsp;<br>&nbsp;<br>
                                 </div>
 
                                 <!--
